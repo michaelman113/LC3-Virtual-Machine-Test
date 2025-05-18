@@ -1,0 +1,35 @@
+LC-3 OBJ FILE
+
+.TEXT
+3000
+6
+5020
+5260
+14A1
+1242
+1001
+0FFD
+
+.SYMBOL
+ADDR | EXT | LABEL
+3003 |   0 | LOOP
+
+.LINKER_INFO
+
+.DEBUG
+# DEBUG SYMBOLS FOR LC3TOOLS
+
+LABEL | INDEX
+LOOP  |   159
+====================
+LINE | ADDR | SOURCE
+   0 | ???? |         .ORIG x3000      ; VM\u{2019}s PC_START\r\n
+   1 | 3000 |         AND  R0, R0, #0  ; running sum\r\n
+   2 | 3001 |         AND  R1, R1, #0  ; counter\r\n
+   3 | 3002 |         ADD  R2, R2, #1  ; constant 1\r\n
+   4 | 3003 | LOOP    ADD  R1, R1, R2  ; counter++\r\n
+   5 | 3004 |         ADD  R0, R0, R1  ; sum += counter\r\n
+   6 | 3005 |         BRnzp LOOP       ; spin forever\r\n
+   7 | ???? |         .END\r\n
+   8 | ???? | 
+====================
