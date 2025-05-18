@@ -1,3 +1,27 @@
+## Project Goal
+
+**Push a hobby RISC VM into the *single-digit-nanosecond* arena using the
+same latency-engineering tricks found in market-data feed handlers and
+matching engines.**
+
+---
+
+## Performance Road-Map
+
+| Phase | Deliverable (tag) | Target Metric |
+|-------|------------------|---------------|
+| **v0.1 ✅** | Baseline interpreter | **≈ 105 ns p99**, 9.5 M instr/s |
+| **v0.2** | **LLVM ORC JIT** | **< 25 ns p99**, 40 M instr/s |
+| **v0.3** | Lock-free **ring-buffer bus** (multi-VM) | **< 10 µs p99** message latency |
+| **v0.4** | Simulated **NIC / pcap feed** | Replay 10 Gbps in real-time |
+| **v0.5** | **Prometheus exporter + Grafana** | Live histograms, < 1 % overhead |
+
+**End-state KPI:** *< 10 ns instruction latency & > 100 M instr/s on a single core,
+with deterministic tail (< 3 × mean).*
+
+
+# V0.1 (5/17/2025)
+
 # LC-3 Low-Latency VM (baseline interpreter)
 
 | Metric (i7-12700K) | Value              |
@@ -7,7 +31,6 @@
 | Throughput         | **≈ 9.5 M instr/s** |
 
 ![baseline](Screenshot%202025-05-17%20194628.png)
-# BASELINE (5/17/2025)
 
 ```bash
 # build
