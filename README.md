@@ -23,6 +23,19 @@ with deterministic tail (< 3 × mean).*
 
 ## V0.1 (5/17/2025) — LC-3 Low-Latency VM (baseline interpreter)
 
+This VM:
+
+Implements the full LC3 16-bit ISA with branching, memory-mapped I/O, and trap vector decoding
+
+Uses a branch-table instruction decode mechanism instead of switch statements, enabling O(1) dispatch
+
+Allocates a cache-aligned 64 KiB arena for memory simulation, allowing precise control over memory latency and alignment
+
+Each instruction is executed in a tight loop with std::chrono-based microbenchmarking, enabling accurate per-instruction latency tracking.
+
+This baseline VM forms the execution kernel that later VMs (e.g., the producer and consumer) build on. By extending the LC3's TRAP set to support message-passing (TRAP x30/x31), the VM becomes a modular compute node capable of participating in a lock-free message fabric — simulating real-world multicore and microkernel architectures under deterministic load.
+
+
 | Metric (i7-12700K) | Value                  |
 |--------------------|------------------------|
 | Instructions run   | **100,000,000**        |
@@ -32,26 +45,28 @@ with deterministic tail (< 3 × mean).*
 
 ![baseline](Screenshot%202025-05-17%20194628.png)
 
+
 ---
 
 ## V0.2 (6/28/2025) — Lock-Free Ring Buffer Bus (Multi-VM)
+
 To enable high-throughput inter-VM communication, I implemented a lock-free, zero-allocation ring buffer modeled after real-world market data buses.
 
 Each LC3 VM runs on its own thread and communicates via a bounded circular queue of 16-bit values:
 
-The producer VM pushes values using a custom TRAP x30, which writes to the ring buffer.
+The producer VM `producer.obj` pushes values using a custom TRAP x30, which writes to the ring buffer.
 
-The consumer VM receives messages via TRAP x31, spinning until data is available.
+The consumer VM `consumer.obj` receives messages via TRAP x31, spinning until data is available.
 
 The ring buffer uses:
 
-std::atomic<size_t> head/tail pointers
+- std::atomic<size_t> head/tail pointers
 
-memory_order_release and memory_order_acquire fences for cross-core visibility
+- memory_order_release and memory_order_acquire fences for cross-core visibility
 
-Power-of-two sizing and bit masking for efficient modular arithmetic
+- Power-of-two sizing and bit masking for efficient modular arithmetic
 
-No heap allocation, mutexes, or blocking syscalls
+- No heap allocation, mutexes, or blocking syscalls
 
 This design mirrors low-latency messaging pipelines found in trading engines and microkernel OSes. It avoids the overhead of traditional queues by ensuring:
 
