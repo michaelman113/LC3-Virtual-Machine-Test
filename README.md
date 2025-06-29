@@ -20,16 +20,6 @@ matching engines.**
 with deterministic tail (< 3 × mean).*
 
 ---
-### Build & Run Instructions
-
-```bash
-# build
-g++ -std=c++17 -O2 src/lc3_vm.cpp -o lc3-vm
-
-# run benchmark
-./lc3-vm bench/sum_loop.obj --quiet
-
----
 
 ## V0.1 (5/17/2025) — LC-3 Low-Latency VM (baseline interpreter)
 
