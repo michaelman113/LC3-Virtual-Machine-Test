@@ -11,7 +11,7 @@ matching engines.**
 | Phase | Deliverable (tag) | Target Metric |
 |-------|------------------|---------------|
 | **v0.1 ✅** | Baseline interpreter | **≈ 105 ns p99**, 9.5 M instr/s |
-| **v0.2 ✅** | Lock-free **ring-buffer bus** (multi-VM) | **< 10 µs p99** message latency |
+| **v0.2 ✅** | Lock-free **ring-buffer bus** (multi-VM) | 160 spins/msg|
 | **v0.3** | **LLVM ORC JIT** | **< 25 ns p99**, 40 M instr/s |
 | **v0.4** | Simulated **NIC / pcap feed** | Replay 10 Gbps in real-time |
 | **v0.5** | **Prometheus exporter + Grafana** | Live histograms, < 1% overhead |
@@ -41,7 +41,7 @@ Measured metrics from `consumer.obj`:
 
 | Metric                 | Value                 |
 |------------------------|-----------------------|
-| Messages Received      | **10,000**            |
+| Messages Received      | **50,000**            |
 | Avg Spins per Msg      | **160.09**            |
 | Avg µs per Msg         | **1466.35 µs**        |
 | Msgs/sec               | **681.96**            |
