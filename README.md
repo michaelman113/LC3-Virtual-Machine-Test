@@ -29,10 +29,7 @@ with deterministic tail (< 3 × mean).*
 | p99 latency        | **≈ 105 ns / instr**   |
 | Throughput         | **≈ 9.5 M instr/s**    |
 
-*Demo*
-![baseline1](bandicam 2025-06-28 17-55-52-344)
 
-*Result*
 ![baseline](Screenshot%202025-05-17%20194628.png)
 
 ---
@@ -52,10 +49,7 @@ Measured metrics from `consumer.obj`:
 | Elapsed Time           | **14.66 s**           |
 | Instruction Rate       | **3409.82 MIPS**      |
 
-*Demo*
-![ring-buffer1](bandicam 2025-06-28 17-55-52-344)
 
-*Result*
 ![ring-buffer](bandicam%202025-06-28%2022-44-59-487.jpg)
 
 This establishes a minimal multi-core style message bus in software, allowing parallel VMs to communicate through high-performance, wait-free infrastructure. Future improvements will focus on:
