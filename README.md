@@ -20,6 +20,16 @@ matching engines.**
 with deterministic tail (< 3 × mean).*
 
 ---
+### Build & Run Instructions
+
+```bash
+# build
+g++ -std=c++17 -O2 src/lc3_vm.cpp -o lc3-vm
+
+# run benchmark
+./lc3-vm bench/sum_loop.obj --quiet
+
+---
 
 ## V0.1 (5/17/2025) — LC-3 Low-Latency VM (baseline interpreter)
 
@@ -57,15 +67,15 @@ This establishes a minimal multi-core style message bus in software, allowing pa
 - Introducing realistic workload simulation (via NIC/pktgen input).
 
 ---
-
 ### Build & Run Instructions
 
 ```bash
 # build
-g++ -std=c++17 -O2 src/lc3_vm.cpp -o lc3-vm
+g++ -std=c++17 -O2 lc3-alt-win-v2.cpp -o dual-vm -luser32
 
 # run benchmark
-./lc3-vm bench/sum_loop.obj --quiet
+./dual-vm
+
 
 
 
