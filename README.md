@@ -35,6 +35,35 @@ with deterministic tail (< 3 × mean).*
 ---
 
 ## V0.2 (6/28/2025) — Lock-Free Ring Buffer Bus (Multi-VM)
+To enable high-throughput inter-VM communication, I implemented a lock-free, zero-allocation ring buffer modeled after real-world market data buses.
+
+Each LC3 VM runs on its own thread and communicates via a bounded circular queue of 16-bit values:
+
+The producer VM pushes values using a custom TRAP x30, which writes to the ring buffer.
+
+The consumer VM receives messages via TRAP x31, spinning until data is available.
+
+The ring buffer uses:
+
+std::atomic<size_t> head/tail pointers
+
+memory_order_release and memory_order_acquire fences for cross-core visibility
+
+Power-of-two sizing and bit masking for efficient modular arithmetic
+
+No heap allocation, mutexes, or blocking syscalls
+
+This design mirrors low-latency messaging pipelines found in trading engines and microkernel OSes. It avoids the overhead of traditional queues by ensuring:
+
+- Constant-time enqueue/dequeue
+
+- Cacheline-aligned memory to prevent false sharing
+
+- Controlled backpressure via busy-spin loops (not sleep or yield)
+
+By using TRAP instructions to trigger message sends and receives, the VM becomes a programmable messaging core — simulating instruction-driven communication between isolated execution contexts. This allows accurate benchmarking of IPC behavior under load, without runtime allocations or scheduler interference.
+
+
 
 ✅ **Inter-VM lock-free message passing working.**
 
