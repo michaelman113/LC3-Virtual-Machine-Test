@@ -22,6 +22,7 @@ with deterministic tail (< 3 × mean).*
 ---
 
 ## V0.1 (5/17/2025) — LC-3 Low-Latency VM (baseline interpreter)
+![design](LC3_Design.png)
 
 This VM:
 
@@ -49,6 +50,7 @@ This baseline VM forms the execution kernel that later VMs (e.g., the producer a
 ---
 
 ## V0.2 (6/28/2025) — Lock-Free Ring Buffer Bus (Multi-VM)
+![ringdesign](Ring_Buffer_Design.png)
 
 To enable high-throughput inter-VM communication, I implemented a lock-free, zero-allocation ring buffer modeled after real-world market data buses.
 
