@@ -8,7 +8,6 @@
 #include <conio.h>
 #include <thread>
 #include <atomic>
-#include <mutex>
 #include "ring_buffer.hpp"
 
 RingBuffer<uint16_t, 1024> ring_bus; 
@@ -65,9 +64,9 @@ public:
             uint16_t op = instr >> 12;
             
             // Debug output for TRAP x30
-            if (op == 0xF && (instr & 0xFF) == 0x30) {
-                printf("[PROD R0=%d] PC=0x%04X\n", reg[0], reg[8]-1);
-            }
+            //if (op == 0xF && (instr & 0xFF) == 0x30) {
+            //    printf("[PROD R0=%d] PC=0x%04X\n", reg[0], reg[8]-1);
+            //}
             
             execute(op, instr);
             ++instr_count;
@@ -84,7 +83,7 @@ public:
         printf("\n==== VM (%s) Metrics ====" "\n", image_name);
         printf("Instructions: %llu\n", instr_count);
         printf("ns/op              : %.2f ns\n", ns_per_instr);
-        printf("Throughput         : %.2f MIPS\n", mips);
+        printf("Throughput         : %.2f instr/s\n", mips);
         printf("Messages Sent: %llu, Recv: %llu\n", msg_send, msg_recv);
         printf("Recv spin iters: %llu\n", recv_spin_total);
         printf("Msgs/sec: %.2f\n", 1000.0 * msg_recv / elapsed_ms);

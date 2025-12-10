@@ -113,7 +113,27 @@ g++ -std=c++17 -O2 lc3-alt-win-v2.cpp -o dual-vm -luser32
 # run benchmark
 ./dual-vm
 
+---
 
+## V0.3 (12/10/2025) — IO Optimization & Alignment Fixes
+![performance-boost](Screenshot%202025-12-10%20123444.png)
 
+**Major Performance Breakthrough:** Identified and eliminated a synchronous I/O bottleneck in the Producer execution loop. Previous versions serialized VM execution to the standard output buffer (console logging).
+
+By decoupling telemetry from the critical path and enforcing cache-line alignment in the ring buffer, the system achieved a **20x throughput increase** and a **95% reduction in message latency**.
+
+**Changelog:**
+- **Hot Path Optimization:** Removed blocking `std::cout` calls from the inner fetch-decode-execute loop.
+- **Header Hygiene:** Removed unused `<mutex>` includes to verify lock-free compliance.
+- **False Sharing Fix:** Enforced `alignas(64)` on ring buffer indices to prevent cache thrashing between Producer and Consumer cores.
+
+| Metric (10k Msgs) | v0.2 (Baseline) | v0.3 (Optimized) | Delta |
+| :--- | :--- | :--- | :--- |
+| **Elapsed Time** | 14.66 s | **0.791 s** | **~19x Faster** |
+| **Avg Latency per Msg** | 1466 µs | **79.12 µs** | **-94%** |
+| **Msg Throughput** | 681 msgs/s | **12,639 msgs/s** | **+1755%** |
+| **Instruction Rate** | 3,409 Instr/s | **63,199 Instr/s** | **+1755%** |
+
+*Note: Instruction rate is CPU-bound by the atomic synchronization overhead of the ring buffer protocol, simulating realistic inter-core communication costs.*
 
 
