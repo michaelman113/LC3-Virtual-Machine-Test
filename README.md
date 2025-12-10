@@ -112,6 +112,7 @@ g++ -std=c++17 -O2 lc3-alt-win-v2.cpp -o dual-vm -luser32
 
 # run benchmark
 ./dual-vm
+```
 
 ---
 
