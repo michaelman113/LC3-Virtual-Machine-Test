@@ -6,21 +6,6 @@ matching engines.**
 
 ---
 
-## Performance Road-Map
-
-| Phase | Deliverable (tag) | Target Metric |
-|-------|------------------|---------------|
-| **v0.1 ✅** | Baseline interpreter | **≈ 105 ns p99**, 9.5 M instr/s |
-| **v0.2 ✅** | Lock-free **ring-buffer bus** (multi-VM) | 160 spins/msg|
-| **v0.3** | **LLVM ORC JIT** | **< 25 ns p99**, 40 M instr/s |
-| **v0.4** | Simulated **NIC / pcap feed** | Replay 10 Gbps in real-time |
-| **v0.5** | **Prometheus exporter + Grafana** | Live histograms, < 1% overhead |
-
-**End-state KPI:** *< 10 ns instruction latency & > 100 M instr/s on a single core,
-with deterministic tail (< 3 × mean).*
-
----
-
 ## V0.1 (5/17/2025) — LC-3 Low-Latency VM (baseline interpreter)
 ![design](LC3_Design.png)
 
